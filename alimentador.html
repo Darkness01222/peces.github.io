@@ -1,34 +1,59 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Estilo para el fondo de la página */
+    body {
+      background-color: #e0f2ff; /* Amarillo claro */
+    }
+
+    /* Estilo para centrar el título */
+    h1 {
+      text-align: center;
+      font-family: 'Arial Round', sans-serif; 
+    }
+
+    /* Estilo para centrar los botones e imagen */
+    .button-container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Estilo para los botones con separación */
+    .custom-button {
+      margin-top: 10px; /* Espacio superior para separación */
+    }
+  </style>
 
   <script>
-    var accessToken = "5ab97d510e2356b04c0e2646d3b14ba1cf489948";
-    var deviceID = "3b001b001547313036303933";
-    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
 
-    function toggleDevice() {
-      // Send a POST request to Particle device to toggle both LED and servo
-      $.post(url, { params: "toggle", access_token: accessToken }, function(data) {
-        // Update the status based on the response
-        var newState = data.result === 1 ? 'alimentar';
-        updateStatus(newState);
-      });
+    var accessToken = "6da2407cd08c7566cb3d6777990c3f45d50e761e";
+    var deviceID = "e00fce6849f0c8bf1892a5a1";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/feed";
+      
+    function feedFish() {
+      $.post(url, { params: "on", access_token: accessToken })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimentando a los peces");
+          } else if(response.return_value == 0){
+            // algo salio mal
+            alert("Algo salió mal. Vuelve a intentarlo")
+          }
+        });
     }
 
-    function updateStatus(status) {
-      var statusText = status === 'alimentar' ? 'FOCO ENCENDIDO=ON' : 'FOCO APAGADO=OFF';
-      document.getElementById('status').innerText = statusText;
-
-    }
   </script>
 </head>
 
 <body>
-  <h1>Toggle Control</h1>
-  <p id="status"></p>
-  <input type="button" onClick="toggleDevice()" value="Toggle"/>
-  
+  <h1>feeding time</h1>
+  <div class="button-container">
+    <input type="button" class="custom-button" onclick="feedFish()" value="FEED" />
+  </div>
 </body>
-
 </html>
