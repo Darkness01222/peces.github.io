@@ -1,0 +1,34 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+
+  <script>
+    var accessToken = "5ab97d510e2356b04c0e2646d3b14ba1cf489948";
+    var deviceID = "3b001b001547313036303933";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
+
+    function toggleDevice() {
+      // Send a POST request to Particle device to toggle both LED and servo
+      $.post(url, { params: "toggle", access_token: accessToken }, function(data) {
+        // Update the status based on the response
+        var newState = data.result === 1 ? 'alimentar';
+        updateStatus(newState);
+      });
+    }
+
+    function updateStatus(status) {
+      var statusText = status === 'alimentar' ? 'FOCO ENCENDIDO=ON' : 'FOCO APAGADO=OFF';
+      document.getElementById('status').innerText = statusText;
+
+    }
+  </script>
+</head>
+
+<body>
+  <h1>Toggle Control</h1>
+  <p id="status"></p>
+  <input type="button" onClick="toggleDevice()" value="Toggle"/>
+  
+</body>
+
+</html>
