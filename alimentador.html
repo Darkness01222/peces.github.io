@@ -46,6 +46,24 @@
           }
         });
     }
+    function enviarFechaHaciaPhoton() {
+  const ahora = new Date();
+  const fecha = `${ahora.getFullYear()}-${ahora.getMonth() + 1}-${ahora.getDate()}`;
+  const hora = `${ahora.getHours()}:${ahora.getMinutes()}:${ahora.getSeconds()}`;
+  const datos = `${fecha} ${hora}`;
+
+  // Llamada a la función en el dispositivo Photon usando la API de Particle
+  particle.callFunction({ deviceId: deviceID, name: 'actualizarFecha', argument: datos, auth: accessToken })
+    .then((data) => {
+      console.log('Fecha enviada al Particle Photon:', data.body.return_value);
+    })
+    .catch((err) => {
+      console.error('Error al enviar datos al Particle Photon:', err);
+    });
+}
+
+// Llamada a la función para enviar la fecha al Photon
+enviarFechaHaciaPhoton();
 
   </script>
 </head>
